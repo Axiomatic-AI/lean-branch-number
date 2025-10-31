@@ -1,0 +1,233 @@
+% In this file you should put the actual content of the blueprint.
+% It will be used both by the web and the print version.
+% It should *not* include the \begin{document}
+
+\section*{Introduction}
+
+This blueprint formalizes Theorem\,1 from \href{https://arxiv.org/pdf/2405.07007}{\textit{A New Algorithm for Computing Branch Number of Non-Singular Matrices over Finite Fields}}. We provide a verified proof that the branch number of an invertible matrix can be computed using an alternate, but equivalent definition. The branch number measures how well a linear transformation spreads information, which is essential for designing secure cryptographic systems.
+
+\section*{Preliminaries}
+
+Let $\mathbb{F}_q$ denote a finite field of order $q$, where $q = p^m$ for some prime $p$ and positive integer $m.$ We denote by $\mathbb{F}_q^n$ the set of vectors of length $n$ with entries from $\mathbb{F}_q$.
+
+\begin{definition}[Hamming Weight]
+\label{def:hamming_weight}
+\lean{wH}
+The Hamming weight of a vector $x = (x_1, \ldots, x_n) \in \mathbb{F}_q^n$, denoted by $w_h(x)$, is the total number of non-zero components in $x$:
+\begin{equation*}
+w_h(x) = |\{i \in \{1, 2, \ldots, n\} : x_i \neq 0\}|.
+\end{equation*}
+\end{definition}
+
+\begin{definition}[Branch Function]
+\label{def:helper_h}
+\lean{h}
+\uses{def:hamming_weight}
+For a matrix $M$ of order $n$ over $\mathbb{F}_q$ and a vector $x \in \mathbb{F}_q^n$, we define
+\begin{equation*}
+h(M,x) = w_h(x) + w_h(Mx).
+\end{equation*}
+\end{definition}
+
+
+\begin{definition}[Differential Branch Number]
+\label{def:diff_branch}
+\lean{Branchnumber}
+\uses{def:hamming_weight}
+The differential branch number $\mathcal{B}_d(M)$ of a matrix $M$ of order $n$ over the finite field $\mathbb{F}_q$ is defined as
+\begin{equation*}
+\mathcal{B}_d(M) = \min_{x \neq 0} \{w_h(x) + w_h(Mx)\}.
+\end{equation*}
+\end{definition}
+
+For simplicity, we refer to the differential branch number as the branch number and denote it by $\mathcal{B}(M)$.
+
+
+\section*{Branch Number Theorem}
+
+\begin{theorem}[Branch Number of Invertible Matrix]
+\label{thm:branch_number_main}
+\lean{branchnumber_equiv}
+\leanok
+\uses{lem:weight_partition, lem:high_weight_partition, lem:high_weight_excluded, lem:extra_term, lem:matrix_inverse, lem:efficient_formula}
+Let $M \in M_n(\mathbb{F}_q)$ be an invertible matrix. Then the branch number of $M$ is given by
+\begin{equation*}
+\mathcal{B}(M) = \min\left\{\min\{h(M,x), h(M^{-1},x)\} \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}.
+\end{equation*}
+\end{theorem}
+
+We establish this theorem through a series of intermediate steps.
+
+Recall that for an invertible matrix $M$ in $M_n(\mathbb{F}_q)$, where $n > 1$, the branch number $\mathcal{B}(M)$ is given as
+\begin{equation*}
+\mathcal{B}(M) = \min\{h(M,x) \mid x \in \mathbb{F}_q^n, x \neq 0\}.
+\end{equation*}
+
+Since $x \neq 0 \Rightarrow w_h(x) \neq 0$, we may write
+\begin{equation*}
+\mathcal{B}(M) = \min\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq n\}.
+\end{equation*}
+
+\begin{step}[Weight Partition]
+\label{lem:weight_partition}
+\lean{step1}
+\uses{def:diff_branch, def:helper_h}
+For an invertible matrix $M \in M_n(\mathbb{F}_q)$, the branch number can be partitioned by vector weight:
+\begin{equation}\label{thm_branch_eqn:1}
+\begin{aligned}
+\mathcal{B}(M) = \min\Bigg\{&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n\right\}\Bigg\}.
+\end{aligned}
+\end{equation}
+\end{step}
+\begin{proof}
+We partition the set $\{1, \ldots, n\}$ into two parts: $\{1, \ldots, \lfloor (n+1)/2 \rfloor\}$ and $\{\lfloor (n+1)/2 \rfloor + 1, \ldots, n\}$, to compute $\mathcal{B}(M)$ as in (1).
+\end{proof}
+
+\begin{step}[Partition High Weight by Image]
+\label{lem:high_weight_partition}
+\lean{step2}
+\uses{lem:weight_partition}
+The high-weight term in (1) can be further partitioned by the weight of the image:
+\begin{equation}\label{thm_branch_eqn:2}
+\begin{aligned}
+&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n\right\}\\
+= &\min\Bigg\{\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(Mx) > \left\lfloor \frac{n+1}{2} \right\rfloor\right\}\Bigg\}.
+\end{aligned}
+\end{equation}
+\end{step}
+\begin{proof}
+We divide the second term on the right-hand side of (1) into cases where $w_h(Mx) \leq \lfloor (n+1)/2 \rfloor$ and $w_h(Mx) > \lfloor (n+1)/2 \rfloor$, which gives us (2) directly.
+\end{proof}
+
+\begin{step}[High Weights Excluded]
+\label{lem:high_weight_excluded}
+\lean{second_term_irrelevant_for_branch_number}
+\uses{lem:weight_partition, lem:high_weight_partition}
+Vectors with both high input weight and high output weight do not contribute to the branch number. Specifically,
+\begin{equation}\label{thm_branch_eqn:3}
+\begin{aligned}
+\mathcal{B}(M) = &\min\Bigg\{\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}\Bigg\}.
+\end{aligned}
+\end{equation}
+\end{step}
+\begin{proof}
+From (1) and (2), we have:
+\begin{equation*}
+\begin{aligned}
+\mathcal{B}(M) = \min\Bigg\{&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(Mx) > \left\lfloor \frac{n+1}{2} \right\rfloor\right\}\Bigg\}.
+\end{aligned}
+\end{equation*}
+
+For the third term, when $w_h(x) > \lfloor (n+1)/2 \rfloor$ and $w_h(Mx) > \lfloor (n+1)/2 \rfloor$:
+\begin{equation*}
+h(M,x) = w_h(x) + w_h(Mx) > 2\left\lfloor \frac{n+1}{2} \right\rfloor + 1 \geq n + 1.
+\end{equation*}
+However, we know that the upper bound for $\mathcal{B}(M)$ is $n + 1$. Thus, this term will not contribute to the computation of the branch number, giving us (3).
+\end{proof}
+
+\begin{step}[Adding Extra Term]
+\label{lem:extra_term}
+\lean{branchnumber_with_extra_term}
+\uses{lem:high_weight_excluded}
+We can add an extra term without affecting the branch number:
+\begin{equation}\label{thm_branch_eqn:4}
+\begin{aligned}
+\mathcal{B}(M) = &\min\Bigg\{\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}\Bigg\}.
+\end{aligned}
+\end{equation}
+\end{step}
+\begin{proof}
+We note that
+\begin{equation*}
+\begin{aligned}
+&\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\} \subseteq\\
+&\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}.
+\end{aligned}
+\end{equation*}
+Therefore,
+\begin{equation*}
+\begin{aligned}
+&\min \left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\} \leq \\
+&\min \left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}.
+\end{aligned}
+\end{equation*}
+Since the right-hand side is always greater than or equal to the left-hand side, if we include this extra term in (3), it will not affect the minimum value, giving us (4).
+\end{proof}
+
+\begin{step}[Matrix Inverse Substitution]
+\label{lem:matrix_inverse}
+\lean{branch_number_matrix_inverse_reformulation}
+\uses{lem:extra_term}
+By merging the last two terms in (4) and substituting $y = Mx$, we can express the branch number using $M^{-1}$:
+\begin{equation}\label{thm_branch_eqn:5}
+\begin{aligned}
+\mathcal{B}(M) = &\min\Bigg\{\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M^{-1},y) \mid y \in \mathbb{F}_q^n, 1 \leq w_h(y) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}\Bigg\}.
+\end{aligned}
+\end{equation}
+\end{step}
+\begin{proof}
+By merging the second and third terms on the right-hand side of (4), we obtain:
+\begin{equation*}
+\begin{aligned}
+\mathcal{B}(M) = &\min\Bigg\{\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}\Bigg\}.
+\end{aligned}
+\end{equation*}
+
+Let $Mx = y$, then $x = M^{-1}y$ and $x \neq 0 \iff y \neq 0 \iff w_h(y) \geq 1$. Then $h(M,x) = h(M^{-1},y)$ and
+\begin{equation*}
+\begin{aligned}
+\mathcal{B}(M) = &\min\Bigg\{\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M^{-1},y) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq n, 1 \leq w_h(y) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}\Bigg\}.
+\end{aligned}
+\end{equation*}
+
+We may drop the condition $1 \leq w_h(x) \leq n$ as this is a trivial condition for $x \neq 0$. Note that the term $x \in \mathbb{F}_q^n$ may be replaced by $y \in \mathbb{F}_q^n$ as the correspondence $x \to y$ is one-to-one, giving us (5).
+\end{proof}
+
+\begin{step}[Efficient Formula]
+\label{lem:efficient_formula}
+\lean{Branchnumber_efficient}
+\uses{lem:matrix_inverse}
+The branch number of $M$ can be computed efficiently as:
+\begin{equation}\label{thm_branch_eqn:6}
+\begin{aligned}
+\mathcal{B}(M) = \min\left\{\min\{h(M,x), h(M^{-1},x)\} \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}.
+\end{aligned}
+\end{equation}
+\end{step}
+\begin{proof}
+From (5), we may rename $y$ to $x$ to obtain:
+\begin{equation*}
+\begin{aligned}
+\mathcal{B}(M) = &\min\Bigg\{\min\left\{h(M,x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\},\\
+&\min\left\{h(M^{-1},x) \mid x \in \mathbb{F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}\Bigg\}.
+\end{aligned}
+\end{equation*}
+
+Or, equivalently, we obtain (6).
+\end{proof}
+
+This completes the proof of Theorem~\ref{thm:branch_number_main}.
+
+
+\section*{Verification}
+\label{sec:errors}
+
+In Step \ref{lem:high_weight_partition}, the proof takes the minimum over a set of vectors. In order to take the minimum, we need to know that the set is nonempty. In this case, the set
+\[
+\left\{x \in \mathbb{F}_q^n \mid \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}
+\]
+can be empty. Specifically, for $M = I$, the second condition becomes $w_h(Mx) = w_h(Ix) = w_h(x)$. In this case, the set becomes
+\[
+\left\{x \in \mathbb{F}_q^n \mid \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\} = \emptyset
+\]
+which is empty due to the contradictory conditions $w_h(x) \leq \left \lfloor \frac{n+1}{2} \right\rfloor < w_h(x)$. This error is represented by the \texttt{sorry} on line 1606 in \lean{branchnumber_equiv}. 
