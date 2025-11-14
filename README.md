@@ -6,31 +6,29 @@ This project formalizes Theorem 1 from [*A New Algorithm for Computing Branch Nu
 
 The blueprint is a web-based documentation of the formalization, showing the mathematical content alongside links to the Lean code.
 
-### Option 1: View Pre-built HTML (No installation required)
+### Step 1: Install leanblueprint
 
-The blueprint is already built in the `blueprint/web/` folder. To view it:
-
-**Open directly in browser:**
-```bash
-open blueprint/web/index.html
-```
-
-**Or serve with Python:**
-```bash
-cd blueprint/web
-python3 -m http.server 8080
-# Then visit http://localhost:8080 in your browser
-```
-
-### Option 2: Rebuild the Blueprint
-
-If you want to rebuild the blueprint from source (requires `leanblueprint` installed):
+Install the leanblueprint CLI tool using pip:
 
 ```bash
-leanblueprint web    # Rebuild web version
-leanblueprint pdf    # Rebuild PDF version
-leanblueprint serve  # Build and serve at http://localhost:8000
+pip install leanblueprint
 ```
+
+For more information, see the [leanblueprint documentation](https://github.com/PatrickMassot/leanblueprint).
+
+### Step 2: Build the web version
+
+```bash
+leanblueprint web
+```
+
+### Step 3: Serve the blueprint locally
+
+```bash
+leanblueprint serve
+```
+
+Then visit `http://0.0.0.0:8000/` in your browser.
 
 ## Building the Lean Code
 
@@ -40,16 +38,3 @@ To build and verify the Lean formalization:
 lake exe cache get  # Download Mathlib cache (recommended)
 lake build          # Build the project
 ```
-
-## Project Structure
-
-- `LeanCryptography/lean_certificate.lean` - Main formalization
-- `blueprint/src/` - Blueprint LaTeX source files
-- `blueprint/web/` - Pre-built web version of blueprint
-- `blueprint/print/` - Pre-built PDF version of blueprint
-
-## Requirements
-
-- **To view the blueprint:** Any modern web browser (no dependencies)
-- **To rebuild the blueprint:** [leanblueprint](https://github.com/PatrickMassot/leanblueprint) and LaTeX
-- **To build the Lean code:** [Lean 4](https://leanprover.github.io/lean4/doc/setup.html) (version specified in `lean-toolchain`)
