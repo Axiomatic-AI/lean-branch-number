@@ -1,1 +1,13 @@
 /.lake
+
+# LaTeX build artifacts
+blueprint/print/*.aux
+blueprint/print/*.fdb_latexmk
+blueprint/print/*.fls
+blueprint/print/*.log
+blueprint/print/*.out
+blueprint/print/*.synctex.gz
+blueprint/src/*.paux
+
+# macOS
+.DS_Store
