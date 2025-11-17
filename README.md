@@ -4,30 +4,11 @@ This project formalizes Theorem 1 from [*A New Algorithm for Computing Branch Nu
 
 ## Setup
 
-### Prerequisites
-
-Leanblueprint requires graphviz. Install it based on your operating system:
-
-**macOS:**
-```bash
-brew install graphviz
-```
-(Requires [Homebrew](https://brew.sh))
-
-**Ubuntu/Debian:**
-```bash
-sudo apt install graphviz libgraphviz-dev
-```
-
-**Other systems:** See the [pygraphviz installation guide](https://pygraphviz.github.io/documentation/stable/install.html).
-
-### Install leanblueprint
-
 ```bash
 pip install leanblueprint
 ```
 
-For more information, see the [leanblueprint documentation](https://github.com/PatrickMassot/leanblueprint).
+See the [leanblueprint documentation](https://github.com/PatrickMassot/leanblueprint) for more information.
 
 ## Useful Commands
 
