@@ -29,13 +29,12 @@
 
 
 <div class="main-text">
-<div class="titlepage">
+ <div class="titlepage">
 <h1>Branch Number Formalization</h1>
 <p class="authors">
-<span class="author">Ben Breen</span>
+<span class="author">Axiomatic AI</span>
 </p>
-</div>
-<h1 id="a0000000002">Introduction</h1>
+</div><h1 id="a0000000002">Introduction</h1>
 <p>This blueprint formalizes Theorem 1 from <a href ="https://arxiv.org/pdf/2405.07007"><i class="itshape">A New Algorithm for Computing Branch Number of Non-Singular Matrices over Finite Fields</i></a>. We provide a verified proof that the branch number of an invertible matrix can be computed using an alternate, but equivalent definition. The branch number measures how well a linear transformation spreads information, which is essential for designing secure cryptographic systems. </p>
 <h1 id="a0000000003">Preliminaries</h1>
 <p>Let \(\mathbb {F}_q\) denote a finite field of order \(q\), where \(q = p^m\) for some prime \(p\) and positive integer \(m.\) We denote by \(\mathbb {F}_q^n\) the set of vectors of length \(n\) with entries from \(\mathbb {F}_q\). </p>
@@ -362,7 +361,7 @@
   </div>
   <div class="stepinner_thmcontent">
   <p>    For an invertible matrix \(M \in M_n(\mathbb {F}_q)\), the branch number can be partitioned by vector weight: </p>
-<div class="equation" id="<plasTeX.TeXFragment object at 0x14e7db230>">
+<div class="equation" id="<plasTeX.TeXFragment object at 0x11f2956d0>">
 <p>
   <div class="equation_content">
     \begin{equation} \label{thm_branch_eqn:1} \begin{aligned}  \mathcal{B}(M) = \min \Bigg\{ & \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} ,\\ & \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n\right\} \Bigg\} . \end{aligned} \end{equation}
@@ -442,10 +441,10 @@
   </div>
   <div class="stepinner_thmcontent">
   <p>    The high-weight term in (1) can be further partitioned by the weight of the image: </p>
-<div class="equation" id="<plasTeX.TeXFragment object at 0x14e7daed0>">
+<div class="equation" id="<plasTeX.TeXFragment object at 0x11f297950>">
 <p>
   <div class="equation_content">
-    \begin{equation} \label{thm_branch_eqn:2} \begin{aligned} & \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n\right\} \\ = & \min \Bigg\{ \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} ,\\ & \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n, w_h(Mx) {\gt} \left\lfloor \frac{n+1}{2} \right\rfloor \right\} \Bigg\} . \end{aligned} \end{equation}
+    \begin{equation} \label{thm_branch_eqn:2} \begin{aligned} & \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n\right\} \\ =& \bbox [5pt, #ffe5e5, border: 1px solid #ffcccc]{ \min \Bigg\{  \min \left\{  h(M,x) \mid x \in \mathbb {F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} ,}^{\textcolor[RGB]{255,153,153}{\dagger }}\\ & \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n, w_h(Mx) {\gt} \left\lfloor \frac{n+1}{2} \right\rfloor \right\} \Bigg\} . \end{aligned} \end{equation}
   </div>
   <span class="equation_label">2</span>
 </p>
@@ -465,6 +464,7 @@
 
   </div>
 </div>
+<p> <span style="color:#FF9999">\(\dagger \)</span> The highlighted term involves taking the minimum over a set that can be empty for certain matrices. See the Verification section (§<a href="index.html#sec:errors">6</a>) for details.  </p>
 <p><div class="stepinner_thmwrapper theorem-style-definition" id="lem:high_weight_excluded">
   <div class="stepinner_thmheading">
     <span class="stepinner_thmcaption">
@@ -524,7 +524,7 @@
   </div>
   <div class="stepinner_thmcontent">
   <p>    Vectors with both high input weight and high output weight do not contribute to the branch number. Specifically, </p>
-<div class="equation" id="<plasTeX.TeXFragment object at 0x14e80dc10>">
+<div class="equation" id="<plasTeX.TeXFragment object at 0x11f2c8890>">
 <p>
   <div class="equation_content">
     \begin{equation} \label{thm_branch_eqn:3} \begin{aligned}  \mathcal{B}(M) = & \min \Bigg\{ \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} ,\\ & \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} \Bigg\} . \end{aligned} \end{equation}
@@ -612,7 +612,7 @@
   </div>
   <div class="stepinner_thmcontent">
   <p>    We can add an extra term without affecting the branch number: </p>
-<div class="equation" id="<plasTeX.TeXFragment object at 0x14e82a870>">
+<div class="equation" id="<plasTeX.TeXFragment object at 0x11f2d6e10>">
 <p>
   <div class="equation_content">
     \begin{equation} \label{thm_branch_eqn:4} \begin{aligned}  \mathcal{B}(M) = & \min \Bigg\{ \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} ,\\ & \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor , w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} ,\\ & \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} \Bigg\} . \end{aligned} \end{equation}
@@ -700,7 +700,7 @@
   </div>
   <div class="stepinner_thmcontent">
   <p>    By merging the last two terms in (4) and substituting \(y = Mx\), we can express the branch number using \(M^{-1}\): </p>
-<div class="equation" id="<plasTeX.TeXFragment object at 0x14e863410>">
+<div class="equation" id="<plasTeX.TeXFragment object at 0x11f43b770>">
 <p>
   <div class="equation_content">
     \begin{equation} \label{thm_branch_eqn:5} \begin{aligned}  \mathcal{B}(M) = & \min \Bigg\{ \min \left\{ h(M,x) \mid x \in \mathbb {F}_q^n, 1 \leq w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} ,\\ & \min \left\{ h(M^{-1},y) \mid y \in \mathbb {F}_q^n, 1 \leq w_h(y) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\} \Bigg\} . \end{aligned} \end{equation}
@@ -818,15 +818,16 @@
 <p>This completes the proof of Theorem&#160;<a href="index.html#thm:branch_number_main">1</a>. </p>
 <h1 id="a0000000024">Verification</h1>
 
-<p>In Step <a href="index.html#lem:high_weight_partition">2</a>, the proof takes the minimum over a set of vectors. In order to take the minimum, we need to know that the set is nonempty. In this case, the set </p>
+<p>In the formalization of Step <a href="index.html#lem:high_weight_partition">2</a>, the proof takes the minimum over a set of vectors. To take this minimum, we need to show that the set is nonempty. However, the set </p>
 <div class="displaymath" id="a0000000025">
   \[  \left\{ x \in \mathbb {F}_q^n \mid \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\}   \]
 </div>
-<p> can be empty. Specifically, for \(M = I\), the second condition becomes \(w_h(Mx) = w_h(Ix) = w_h(x)\). In this case, the set becomes </p>
+<p> can be empty for some matrices. Specifically, when \(M = I\) (the identity matrix), we have \(w_h(Mx) = w_h(Ix) = w_h(x)\), so the set becomes </p>
 <div class="displaymath" id="a0000000026">
   \[  \left\{ x \in \mathbb {F}_q^n \mid \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x) \leq n, w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor \right\}  = \emptyset  \]
 </div>
-<p> which is empty due to the contradictory conditions \(w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x)\). This error is represented by the <span class="ttfamily">sorry</span> on line 1606 in .  </p>
+<p> which is empty due to the contradictory conditions \(w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor {\lt} w_h(x)\). This issue corresponds to the <span class="ttfamily">sorry</span> on line 1606 in . </p>
+<p>Despite the issue in this intermediate step, the final result in Theorem&#160;<a href="index.html#thm:branch_number_main">1</a> remains valid.  </p>
 
 </div> <!--main-text -->
 </div> <!-- content-wrapper -->

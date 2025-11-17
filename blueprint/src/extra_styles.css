@@ -53,3 +53,5 @@ div.definition_thmcontent p {
 .definition_thmwrapper .definition_thmcontent {
 	padding-left: 0 !important;
 }
+
+/* Removed - only want red box on specific part, not whole equation */
