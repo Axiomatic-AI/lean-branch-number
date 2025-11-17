@@ -6,9 +6,24 @@ This project formalizes Theorem 1 from [*A New Algorithm for Computing Branch Nu
 
 The blueprint is a web-based documentation of the formalization, showing the mathematical content alongside links to the Lean code.
 
-### Step 1: Install leanblueprint
+### Step 1: Install system dependencies
 
-Install the leanblueprint CLI tool using pip:
+Leanblueprint requires graphviz. Install it based on your operating system:
+
+**macOS:**
+```bash
+brew install graphviz
+```
+(Requires [Homebrew](https://brew.sh). If you don't have Homebrew, install it first.)
+
+**Ubuntu/Debian:**
+```bash
+sudo apt install graphviz libgraphviz-dev
+```
+
+**Other systems:** See the [pygraphviz installation guide](https://pygraphviz.github.io/documentation/stable/install.html).
+
+### Step 2: Install leanblueprint
 
 ```bash
 pip install leanblueprint
@@ -16,13 +31,13 @@ pip install leanblueprint
 
 For more information, see the [leanblueprint documentation](https://github.com/PatrickMassot/leanblueprint).
 
-### Step 2: Build the web version
+### Step 3: Build the web version
 
 ```bash
 leanblueprint web
 ```
 
-### Step 3: Serve the blueprint locally
+### Step 4: Serve the blueprint locally
 
 ```bash
 leanblueprint serve

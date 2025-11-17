@@ -1,13 +1,19 @@
-/.lake
-
-# LaTeX build artifacts
-blueprint/print/*.aux
-blueprint/print/*.fdb_latexmk
-blueprint/print/*.fls
-blueprint/print/*.log
-blueprint/print/*.out
-blueprint/print/*.synctex.gz
-blueprint/src/*.paux
-
-# macOS
+.lake
+*.olean
+*.paux
+*.aux
+*.fls
+*.fdb_latexmk
+*.log
+*.swp
+*.out
+*.synctex.gz
 .DS_Store
+
+# leanblueprint generated artifacts
+lean_decls
+blueprint/web
+blueprint/print
+
+# Keep source files
+!blueprint/src/
