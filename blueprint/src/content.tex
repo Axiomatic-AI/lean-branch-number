@@ -222,14 +222,10 @@ This completes the proof of Theorem~\ref{thm:branch_number_main}.
 \section*{Verification}
 \label{sec:errors}
 
-In the formalization of Step \ref{lem:high_weight_partition}, the proof takes the minimum over a set of vectors. To take this minimum, we need to show that the set is nonempty. However, the set
+During formalization, we identified that Step \ref{lem:high_weight_partition} in the original proof takes the minimum over a set of vectors that can be empty for certain matrices. Specifically, the set
 \[
 \left\{x \in \mathbb{F}_q^n \mid \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}
 \]
-can be empty for some matrices. Specifically, when $M = I$ (the identity matrix), we have $w_h(Mx) = w_h(Ix) = w_h(x)$, so the set becomes
-\[
-\left\{x \in \mathbb{F}_q^n \mid \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(x) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\} = \emptyset
-\]
-which is empty due to the contradictory conditions $w_h(x) \leq \left \lfloor \frac{n+1}{2} \right\rfloor < w_h(x)$. This issue corresponds to the \texttt{sorry} on line 1606 in \lean{Branchnumber_efficient}. 
+is empty when $M = I$ (the identity matrix), since $w_h(Mx) = w_h(Ix) = w_h(x)$ yields the contradictory conditions $w_h(x) \leq \left \lfloor \frac{n+1}{2} \right\rfloor < w_h(x)$. This gap in the proof is represented by the \texttt{sorry} in \lean{Branchnumber_efficient}. 
 
-Despite the issue in this intermediate step, the final result in Theorem~\ref{thm:branch_number_main} remains valid. 
+While this represents a gap in the original proof, the final theorem (Theorem~\ref{thm:branch_number_main}) remains mathematically valid, as the problematic term is eliminated in Step~\ref{lem:high_weight_excluded}. 
