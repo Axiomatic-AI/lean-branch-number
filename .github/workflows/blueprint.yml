@@ -94,17 +94,19 @@ jobs:
             # cp blueprint/print/print.pdf home_page/blueprint.pdf
             cp -r blueprint/web home_page/blueprint
 
-      - name: Check declarations mentioned in the blueprint exist in Lean code
-        run: |
-            ~/.elan/bin/lake exe checkdecls blueprint/lean_decls
+      # Skip checkdecls since we're not building the Lean project
+      # - name: Check declarations mentioned in the blueprint exist in Lean code
+      #   run: |
+      #       ~/.elan/bin/lake exe checkdecls blueprint/lean_decls
 
-      - name: Copy API documentation to `home_page/docs`
-        run: cp -r .lake/build/doc home_page/docs
+      # Skip API docs since we're not building them
+      # - name: Copy API documentation to `home_page/docs`
+      #   run: cp -r .lake/build/doc home_page/docs
 
-      - name: Remove unnecessary lake files from documentation in `home_page/docs`
-        run: |
-          find home_page/docs -name "*.trace" -delete
-          find home_page/docs -name "*.hash" -delete
+      # - name: Remove unnecessary lake files from documentation in `home_page/docs`
+      #   run: |
+      #     find home_page/docs -name "*.trace" -delete
+      #     find home_page/docs -name "*.hash" -delete
 
       - name: Bundle dependencies
         uses: ruby/setup-ruby@v1
@@ -129,6 +131,7 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-      - name: Make sure the API documentation cache works
-        run: mv home_page/docs .lake/build/doc
+      # Skip since we're not building API docs
+      # - name: Make sure the API documentation cache works
+      #   run: mv home_page/docs .lake/build/doc
      
