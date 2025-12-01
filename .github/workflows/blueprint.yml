@@ -101,6 +101,7 @@ jobs:
 
       - name: Copy API documentation to `home_page/docs`
         run: |
+          sudo chown -R $USER:$USER home_page
           mkdir -p home_page/docs
           cp -r .lake/build/doc/* home_page/docs/
 
