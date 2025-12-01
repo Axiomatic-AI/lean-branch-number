@@ -86,7 +86,9 @@ jobs:
             python3 -m venv env
             source env/bin/activate
             pip install --upgrade pip requests wheel
-            pip install pygraphviz --global-option=build_ext --global-option="-L/usr/lib/graphviz/" --global-option="-R/usr/lib/graphviz/"
+            pip install --config-settings="--build-option=--library-dirs=/usr/lib/graphviz" \
+                        --config-settings="--build-option=--include-dirs=/usr/include/graphviz" \
+                        pygraphviz
             pip install leanblueprint
             leanblueprint pdf
             mkdir -p home_page
