@@ -87,10 +87,11 @@ jobs:
             pip install --upgrade pip requests wheel
             pip install pygraphviz
             pip install leanblueprint
-            leanblueprint pdf
-            mkdir -p home_page
-            cp blueprint/print/print.pdf home_page/blueprint.pdf
             leanblueprint web
+            mkdir -p home_page
+            # Skip PDF build for now due to LaTeX reference resolution issues
+            # leanblueprint pdf
+            # cp blueprint/print/print.pdf home_page/blueprint.pdf
             cp -r blueprint/web home_page/blueprint
 
       - name: Check declarations mentioned in the blueprint exist in Lean code
