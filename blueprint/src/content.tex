@@ -222,12 +222,12 @@ This completes the proof of Theorem~\ref{thm:branch_number_main}.
 \section*{Verification}
 \label{sec:errors}
 
-During formalization, we identified that Step \ref{lem:high_weight_partition} in the original proof takes the minimum over a set of vectors that can be empty for certain matrices. Specifically, the set
+During formalization, we identified that Step \ref{lem:high_weight_partition} (shown in pink box) in the original proof takes the minimum over a set of vectors that can be empty for certain matrices. Specifically, the set
 \[
 \left\{x \in \mathbb{F}_q^n \mid \left\lfloor \frac{n+1}{2} \right\rfloor < w_h(x) \leq n, w_h(Mx) \leq \left\lfloor \frac{n+1}{2} \right\rfloor\right\}
 \]
 is empty when $M = I$ (the identity matrix), since $w_h(Mx) = w_h(Ix) = w_h(x)$ yields the contradictory conditions $w_h(x) \leq \left \lfloor \frac{n+1}{2} \right\rfloor < w_h(x)$. 
 
-This gap in the proof is represented by the \texttt{sorry} in \lean{Branchnumber_efficient}. 
+This gap in the proof is represented by the \texttt{sorry} in \href{https://axiomatic-ai.github.io/lean-branch-number/docs/LeanCryptography/lean_certificate.html\#Branchnumber_efficient}{\texttt{Branchnumber\_efficient}}. 
 
 While this represents a gap in the original proof, the final theorem (Theorem~\ref{thm:branch_number_main}) remains mathematically valid. 
